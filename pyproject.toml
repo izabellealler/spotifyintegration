@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "spotifyintegration"
+version = "0.1.0"
+description = ""
+authors = ["Izabelle Aller <izabelle.aller@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ignr = "^2.2"
+ruff = "^0.5.1"
+taskipy = "^1.13.0"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+preview = true
+select = ['I', 'F', 'E', 'W', 'PL', 'PT']
+
+[tool.ruff.format]
+preview = true
+quote-style = 'single'
+
+[tool.taskipy.tasks]
+lint = 'ruff check . && ruff check . --diff'
+format = 'ruff check . --fix && ruff format .'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
