@@ -8,27 +8,23 @@ import requests
 from backend.settings import settings
 
 
-def get_spotify_auth_url() -> str:
+def get_auth_url() -> str:
     state_expected = secrets.token_urlsafe(16)
-    data = {
+    params = {
             "client_id": settings.SPOTIPY_CLIENT_ID,
             "response_type": "code",
             "redirect_uri": settings.SPOTIPY_REDIRECT_URI,
             "scope": settings.SPOTIPY_SCOPE,
             "state": f"{state_expected}",
         }
-    auth_url = "https://accounts.spotify.com/authorize?" + urlencode(data)
-    return auth_url
-
-
-def get_code(auth_url: str):
+    auth_url = "https://accounts.spotify.com/authorize?" + urlencode(params)
     parsed_url = urlparse(auth_url)
     query_params = parse_qs(parsed_url.query)
     code = query_params.get('code', [None])[0]
-    return code
+    return auth_url, code
 
 
-def get_spotify_token(code: str) -> Dict:
+def get_token(code: str) -> Dict:
     auth_header = base64.b64encode(f"{settings.SPOTIPY_CLIENT_ID}:{settings.SPOTIPY_CLIENT_SECRET}".encode()).decode()
     response = requests.post(
         "https://accounts.spotify.com/api/token",
@@ -40,6 +36,24 @@ def get_spotify_token(code: str) -> Dict:
             "code": code,
             "redirect_uri": settings.SPOTIPY_REDIRECT_URI,
         },
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+def get_informations(access_token: str) -> Dict:
+    response = requests.get(
+        'https://api.spotify.com/v1/search',
+        headers={
+            'Authorization': f'Bearer {access_token}',
+        },
+        params={
+            "q": f"{settings.SPOTIPY_GENRES}",
+            "type": ["track"],
+            "market": "BR",
+            "limit": 1,
+            "tempo": 130,
+        }
     )
     response.raise_for_status()
     return response.json()
