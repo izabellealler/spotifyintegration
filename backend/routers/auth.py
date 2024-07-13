@@ -24,9 +24,10 @@ def read_callback(code: str = Query(...)):
     try:
         token = get_token(code)
         access_token = token.get('access_token')
-        search_url= f"/search/filter?access_token={access_token}"
-        playlist_url= f"/playlist/filter?access_token={access_token}"
-        redirect_url = playlist_url if settings.STATUS else search_url
+        if bool(settings.STATUS):
+            redirect_url = f"/playlist/filter?access_token={access_token}"
+        else:
+            redirect_url = f"/search/filter?access_token={access_token}"
         return RedirectResponse(url=redirect_url)
     except requests.exceptions.HTTPError as e:
         raise HTTPException(status_code=e.response.status_code, detail=e.response.json())
