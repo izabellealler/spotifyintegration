@@ -1,11 +1,12 @@
 import requests
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
-from backend.settings import settings
+
 from backend.requests.auth import (
     get_auth_url,
     get_token,
 )
+from backend.settings import settings
 
 router = APIRouter()
 

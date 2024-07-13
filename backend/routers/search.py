@@ -3,7 +3,6 @@ from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import RedirectResponse
 
 from backend.requests.search import get_search
-from backend.utils.saveexcel import save_excel
 
 router = APIRouter()
 
