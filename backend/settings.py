@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     SPOTIPY_SCOPE: str
     SPOTIPY_GENRES: List[str]
     SPOTIPY_PLAYLIST_ID: str
+    STATUS: bool
 
     class Config:
         env_file = '.env'
