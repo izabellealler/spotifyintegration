@@ -39,21 +39,3 @@ def get_token(code: str) -> Dict:
     )
     response.raise_for_status()
     return response.json()
-
-
-def get_informations(access_token: str) -> Dict:
-    response = requests.get(
-        'https://api.spotify.com/v1/search',
-        headers={
-            'Authorization': f'Bearer {access_token}',
-        },
-        params={
-            "q": f"{settings.SPOTIPY_GENRES}",
-            "type": ["track"],
-            "market": "BR",
-            "limit": 1,
-            "tempo": 130,
-        }
-    )
-    response.raise_for_status()
-    return response.json()

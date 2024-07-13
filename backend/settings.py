@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     SPOTIPY_REDIRECT_URI: str
     SPOTIPY_SCOPE: str
     SPOTIPY_GENRES: List[str]
+    SPOTIPY_PLAYLIST_ID: str
 
     class Config:
         env_file = '.env'
